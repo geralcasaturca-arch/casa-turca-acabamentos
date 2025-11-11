@@ -1,8 +1,15 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
-  reactCompiler: true,
+// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+    turbopack: {}, // Resolve conflito Turbopack
+    webpack: (config, { isServer }) => {
+        if (!isServer) {
+            // Ignora módulos Deno para Next.js
+            config.externals.push({
+                'https://deno.land/std': 'https://deno.land/std',
+            });
+        }
+        return config;
+    },
 };
-
-export default nextConfig;
+module.exports = nextConfig;
