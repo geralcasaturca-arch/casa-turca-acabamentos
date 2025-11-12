@@ -1,23 +1,24 @@
-// next.config.js — compatível com Vercel e Turbopack
+import type { NextConfig } from 'next';
+import type { Configuration } from 'webpack';
+import webpack from 'webpack';
 
-const webpack = require('webpack');
-
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig: NextConfig = {
   experimental: {
-    turbo: true, // ativa Turbopack (opcional)
+    turbo: true, // ativa Turbopack
   },
-  webpack: (config, { isServer }) => {
+  webpack: (config: Configuration, { isServer }) => {
     if (!isServer) {
-      // Ignora qualquer import remoto Deno no bundle do cliente
+      // Ignora importações Deno no bundle do cliente
+      config.plugins = config.plugins || [];
       config.plugins.push(
         new webpack.IgnorePlugin({
           resourceRegExp: /^https:\/\/deno\.land\/std/,
         })
       );
     }
+
     return config;
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
