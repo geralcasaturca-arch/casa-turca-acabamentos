@@ -1,7 +1,8 @@
-// /src/app/layout.tsx (CÓDIGO ATUALIZADO COM NOVAS FONTES)
+// /src/app/layout.tsx (CÓDIGO ATUALIZADO COM HEADER E FOOTER)
 
 import './globals.css';
-// Importação de fonte de luxo (Serif) do Google Fonts
+import Header from '@/components/Header'; // <-- NOVO IMPORT
+import Footer from '@/components/Footer'; // <-- NOVO IMPORT
 import { Playfair_Display, Inter } from 'next/font/google'; 
 
 // Inicialização da fonte (para que o Tailwind a possa usar)
@@ -18,7 +19,7 @@ const inter = Inter({
 });
 
 
-// Metadata e RootLayout (use a cor primária para o fundo)
+// Metadata e RootLayout
 export const metadata = {
   title: 'A Casa Turca Acabamentos | Luxo & Gestão Ágil',
   description: 'Gestão de projetos de design de interiores e acabamentos de alto padrão em Luanda, Angola. Onde a arte encontra a eficiência.',
@@ -30,9 +31,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    // Aplicamos as classes de fonte e fundo ao corpo principal
     <html lang="pt" className={`${playfair.variable} ${inter.variable} bg-turca-fundo`}> 
-      <body>{children}</body>
+      <body className="flex min-h-screen flex-col">
+        {/* CABEÇALHO DO SITE */}
+        <Header /> 
+
+        {/* CONTEÚDO PRINCIPAL (OCUPA ESPAÇO) */}
+        <main className="flex-grow">
+          {children}
+        </main>
+
+        {/* RODAPÉ DO SITE */}
+        <Footer /> 
+      </body>
     </html>
   );
 }
