@@ -1,13 +1,14 @@
-// next.config.js (VERSÃO ESTÁVEL COM FUNÇÃO TRADICIONAL)
+// next.config.js (SOLUÇÃO TURBOPACK/WEBPACK FINAL)
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // Não incluímos 'turbopack: {}' para evitar o conflito anterior.
+    // 1. ADICIONE ISTO: Silencia o erro do Vercel, dizendo "Eu sei que estou a usar o Webpack customizado."
+    turbopack: {}, 
     
-    // Configuração para ignorar módulos Deno/Supabase no lado do servidor.
+    // 2. Regra de webpack para ignorar módulos Deno/Supabase no lado do servidor.
     webpack: function(config, { isServer }) {
         if (!isServer) {
-            // Regra principal: Ignorar as Edge Functions
+            // Regra principal: Ignorar as Edge Functions (resolve o erro 'deno.land/std')
             config.externals = {
                 ...config.externals,
                 'https://deno.land/std': 'https://deno.land/std',
