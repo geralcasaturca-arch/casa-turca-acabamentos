@@ -6,19 +6,19 @@ const nextConfig = {
     turbopack: {}, 
     
     // 2. Regra de webpack para ignorar módulos Deno/Supabase no lado do servidor.
-    // Tipamos o argumento 'config' para satisfazer o compilador do TypeScript.
-    webpack: function(config, options) {
-        /** @type {import('webpack').Configuration} */
-        const typedConfig = config; // Tipa a configuração
-        
+    // Usamos a sintaxe de função arrow com um JSDoc detalhado para forçar a tipagem.
+    /** * @param {import('webpack').Configuration} config
+     * @param {{isServer: boolean, dev: boolean, dir: string, config: nextConfig}} options
+     */
+    webpack: (config, options) => {
         if (!options.isServer) {
             // Regra principal: Ignorar as Edge Functions (resolve o erro 'deno.land/std')
-            typedConfig.externals = {
-                ...typedConfig.externals,
+            config.externals = {
+                ...config.externals,
                 'https://deno.land/std': 'https://deno.land/std',
             };
         }
-        return typedConfig;
+        return config;
     },
 };
 
