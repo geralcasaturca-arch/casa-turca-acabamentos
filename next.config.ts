@@ -1,15 +1,20 @@
-// next.config.js
+// next.config.js (VERSÃO ESTÁVEL COM FUNÇÃO TRADICIONAL)
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    turbopack: {}, // Resolve conflito Turbopack
-    webpack: (config, { isServer }) => {
+    // Não incluímos 'turbopack: {}' para evitar o conflito anterior.
+    
+    // Configuração para ignorar módulos Deno/Supabase no lado do servidor.
+    webpack: function(config, { isServer }) {
         if (!isServer) {
-            // Ignora módulos Deno para Next.js
-            config.externals.push({
+            // Regra principal: Ignorar as Edge Functions
+            config.externals = {
+                ...config.externals,
                 'https://deno.land/std': 'https://deno.land/std',
-            });
+            };
         }
         return config;
     },
 };
+
 module.exports = nextConfig;
